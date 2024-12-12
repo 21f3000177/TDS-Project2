@@ -51,6 +51,35 @@ def append_img_to_readme(output_folder, heading, image_path):
 
 def visualize_data(data, output_folder):
     """Generate and save various visualizations for the dataset."""
+    # Plot Correlation Heatmap
+    numeric_data = data.select_dtypes(include=['number'])
+    if not numeric_data.empty:
+        correlation_matrix = numeric_data.corr()
+    # Plot Correlation Heatmap
+    plt.figure(figsize=(10, 8))
+    sns.heatmap(correlation_matrix, annot=True, cmap='coolwarm')
+    plt.title('Correlation Heatmap')
+    heatmap_path = os.path.join(output_folder, "correlation_heatmap.png")
+    plt.savefig(heatmap_path)
+    plt.close()
+    append_img_to_readme(output_folder, "Correlation Heatmap", heatmap_path)
+
+    if not numeric_data.empty:
+        kmeans = KMeans(n_clusters=2, random_state=0)
+        numeric_data = numeric_data.fillna(numeric_data.mean())
+        data['Cluster'] = kmeans.fit_predict(numeric_data)
+        # print(data[['Cluster']].value_counts())
+
+        # Plot clustering results
+        plt.figure(figsize=(8, 6))
+        plt.scatter(numeric_data.iloc[:, 0], numeric_data.iloc[:, 1], c=data['Cluster'], cmap='viridis')
+        plt.title('KMeans Clustering')
+        plt.xlabel(numeric_data.columns[0])
+        plt.ylabel(numeric_data.columns[1])
+        clustering_path = os.path.join(output_folder, "kmeans_clustering.png")
+        plt.savefig(clustering_path)
+        append_img_to_readme(output_folder, "KMeans Clustering Plot", clustering_path)
+
     # Generate histograms for numeric data
     numeric_data = data.select_dtypes(include=['float'])
     if not numeric_data.empty:
@@ -68,6 +97,7 @@ def visualize_data(data, output_folder):
 
     numeric_data = data.select_dtypes(include=['integer'])
     test_data_bp = numeric_data.columns[-1:] if len(numeric_data.columns) > 2 else numeric_data.columns
+
     # Generate box plots for numeric data
     for column in test_data_bp:
         plt.figure()
@@ -156,7 +186,10 @@ def generate_story(file_name, summary):
         "Authorization": f"Bearer {AIPROXY_TOKEN}",
         "Content-Type": "application/json"
     }
-    prompt = f"Write a detailed report on the analysis of the dataset '{file_name}'.\n\nAnalysis report:\n{summary}\n\nInclude insights, observations, and possible implications."
+    prompt = f"""Write a detailed report on the analysis of the 
+    dataset '{file_name}'.\n\nAnalysis report:\n{summary}\n\nInclude insights, observations, and possible implications.
+     Narrate the findings in a story-like manner to convey the insights effectively. Provide a conclusion summarizing 
+     the key takeaways from the analysis."""
     # Request payload
     payload = {
         "model": "gpt-4o-mini",
@@ -202,14 +235,6 @@ def analyze_csv(file_path, output_folder):
         numeric_data = data.select_dtypes(include=['number'])
         if not numeric_data.empty:
             correlation_matrix = numeric_data.corr()
-
-            # Plot Correlation Heatmap
-            plt.figure(figsize=(10, 8))
-            sns.heatmap(correlation_matrix, annot=True, cmap='coolwarm')
-            plt.title('Correlation Heatmap')
-            heatmap_path = os.path.join(output_folder, "correlation_heatmap.png")
-            plt.savefig(heatmap_path)
-            relevant_charts["Correlation Heatmap"] = heatmap_path
             findings['correlation_matrix'] = correlation_matrix
 
         # Outlier Detection (using IQR)
@@ -228,20 +253,7 @@ def analyze_csv(file_path, output_folder):
             kmeans = KMeans(n_clusters=2, random_state=0)
             numeric_data = numeric_data.fillna(numeric_data.mean())
             data['Cluster'] = kmeans.fit_predict(numeric_data)
-            #print(data[['Cluster']].value_counts())
-
-            # Plot clustering results
-            plt.figure(figsize=(8, 6))
-            plt.scatter(numeric_data.iloc[:, 0], numeric_data.iloc[:, 1], c=data['Cluster'], cmap='viridis')
-            plt.title('KMeans Clustering')
-            plt.xlabel(numeric_data.columns[0])
-            plt.ylabel(numeric_data.columns[1])
-            clustering_path = os.path.join(output_folder, "kmeans_clustering.png")
-            plt.savefig(clustering_path)
-            #print(f"KMeans clustering plot saved to {clustering_path}")
             findings['kmeans_clusters'] = data['Cluster'].value_counts()
-            relevant_charts["KMeans Clustering Plot"] = clustering_path
-
 
         # Generate story
         file_name = os.path.basename(file_path)
