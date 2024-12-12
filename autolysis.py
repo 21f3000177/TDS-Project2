@@ -90,7 +90,7 @@ def visualize_data(data, output_folder):
             plt.title(f'Histogram of {column}')
             plt.xlabel(column)
             plt.ylabel('Frequency')
-            histogram_path = os.path.join(output_folder, f"histogram_{column}.png")
+            histogram_path = os.path.join(output_folder, f"histogram_{column.replace(' ', '_')}.png")
             plt.savefig(histogram_path)
             plt.close()
             append_img_to_readme(output_folder, f"Histogram of {column}", histogram_path)
