@@ -29,11 +29,12 @@ AIPROXY_TOKEN = os.getenv('AIPROXY_TOKEN')
 openai.api_key = AIPROXY_TOKEN
 
 
-def append_to_readme(output_folder, heading, content=None):
+def append_to_readme(output_folder, heading=None, content=None):
     """Append an image with a heading to the README.md file."""
     readme_path = os.path.join(output_folder, "README.md")
     with open(readme_path, "a") as readme_file:
-        readme_file.write(f"\n## {heading}\n")
+        if heading:
+            readme_file.write(f"\n## {heading}\n")
         if content:
             readme_file.write(f"\n {content}\n")
     return
@@ -245,9 +246,9 @@ def analyze_csv(file_path, output_folder):
         # Generate story
         file_name = os.path.basename(file_path)
         story = generate_story(file_name, findings)
-        append_to_readme(output_folder, f"Story generated using LLM", story)
+        append_to_readme(output_folder,content=story)
         # Add relevant chart for readme
-        append_to_readme(output_folder, "Relevant Charts")
+        append_to_readme(output_folder, heading="Relevant Charts")
         for key,value in relevant_charts.items():
             append_img_to_readme(output_folder, key, value)
 
