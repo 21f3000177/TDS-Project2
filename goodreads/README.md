@@ -69,7 +69,7 @@ The usage of K-Means clustering resulted in two clusters, with one receiving a s
    
 2. **Targeted Recommendations**: Insights from ratings and reviews could enable Goodreads to enhance its recommendation system, drawing from both successful titles and their corresponding reader engagements to boost visibility for lesser-known works.
 
-3. **Improving Data Quality**: Addressing missing values and conducting a review of the outliers can improve the integrity of analyses and foster more accurate insights, ultimately benefiting users’ search experiences.
+3. **Improving Data Quality**: Addressing missing values and conducting a review of the outliers can improve the integrity of analyses and foster more accurate insights, ultimately benefiting usersï¿½ search experiences.
 
 4. **Marketing Strategies**: The data can inform marketing strategies for books with high ratings but lower visibility through promotional efforts focused on leveraging the clustering and engagement statistics.
 
@@ -77,7 +77,7 @@ The usage of K-Means clustering resulted in two clusters, with one receiving a s
 
 In conclusion, the dataset is rich with information that can significantly support analyses and strategies across various aspects of book publishing, marketing, and reader engagement. Further exploration using advanced analytical techniques could yield deeper insights and more tailored user experiences.
 
-## Relevant Charts
+## Visualizations
 
 ### Correlation Heatmap
 ![Correlation Heatmap](correlation_heatmap.png)

@@ -248,7 +248,7 @@ def analyze_csv(file_path, output_folder):
         story = generate_story(file_name, findings)
         append_to_readme(output_folder,content=story)
         # Add relevant chart for readme
-        append_to_readme(output_folder, heading="Relevant Charts")
+        append_to_readme(output_folder, heading="Visualizations")
         for key,value in relevant_charts.items():
             append_img_to_readme(output_folder, key, value)
 

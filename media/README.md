@@ -81,7 +81,7 @@ This clustering suggests that there might be distinct groups within the dataset 
 ### Implications
 The insights generated from this analysis can be valuable for stakeholders in the media sector, including filmmakers, marketers, and distributors, allowing for data-informed decisions to enhance content quality, increase viewer engagement, and optimize marketing strategies. Future study efforts should address missing values and conduct deeper segment analyses based on clusters to gauge distinct audience preferences better.
 
-## Relevant Charts
+## Visualizations
 
 ### Correlation Heatmap
 ![Correlation Heatmap](correlation_heatmap.png)

@@ -79,7 +79,7 @@ This analysis suggests areas for improvement:
 
 In conclusion, the dataset 'happiness.csv' provides a nuanced understanding of factors influencing global happiness levels, enabling targeted and informed interventions aimed at enhancing overall well-being in societies.
 
-## Relevant Charts
+## Visualizations
 
 ### Correlation Heatmap
 ![Correlation Heatmap](correlation_heatmap.png)
