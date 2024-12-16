@@ -29,6 +29,27 @@ AIPROXY_TOKEN = os.getenv('AIPROXY_TOKEN')
 openai.api_key = AIPROXY_TOKEN
 
 
+def validate_csv_file(file_path):
+    """
+    Validates if the provided file path is a CSV file.
+
+    Parameters:
+        file_path (str): Path to the file.
+
+    Returns:
+        bool: True if the file is a valid CSV file, False otherwise.
+    """
+    if not os.path.isfile(file_path):
+        print(f"Error: The path '{file_path}' does not point to a valid file.")
+        return False
+
+    if not file_path.lower().endswith('.csv'):
+        print(f"Error: The file '{file_path}' is not a CSV file. Please provide a .csv file.")
+        return False
+
+    return True
+
+
 def append_to_readme(output_folder, heading=None, content=None):
     """Append an image with a heading to the README.md file."""
     readme_path = os.path.join(output_folder, "README.md")
@@ -277,13 +298,21 @@ def analyze_csv(file_path, output_folder):
 
 
 def main():
-    parser = argparse.ArgumentParser(description="Analyze a CSV file.")
-    parser.add_argument("file", help="Path to the CSV file to analyze.")
-    args = parser.parse_args()
+    try:
+        parser = argparse.ArgumentParser(description="Analyze a CSV file.")
+        parser.add_argument("file", help="Path to the CSV file to analyze.")
+        args = parser.parse_args()
 
-    # Create output folder and README
-    curr_path = create_out_dir(args.file)
-    analyze_csv(args.file, curr_path)
+        file_path = args.file
+
+        if validate_csv_file(file_path):
+            # Create output folder and README
+            curr_path = create_out_dir(file_path)
+            analyze_csv(file_path, curr_path)
+        else:
+            print("Provide a valid csv file as argument")
+    except Exception as e:
+        print(f"An unexpected error occurred: {e}")
 
 
 if __name__ == "__main__":
